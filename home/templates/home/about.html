@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+
+    <!-- Main Content -->
+    <main class="flex-grow py-10 bg-gradient-to-r from-blue-100 via-green-100 to-yellow-100">
+        <div class="container mx-auto px-4">
+            <!-- Introduction -->
+            <section class="text-center mb-12">
+                <h2 class="text-3xl font-bold mb-4 text-gray-900 animate__animated animate__fadeIn">About Us</h2>
+                <p class="text-lg text-gray-700 animate__animated animate__fadeIn animate__delay-1s">
+                    Welcome to Exodia, an innovative web application designed to assist penetration testers with AI-powered tools. Our platform leverages large language models (LLMs) to help security professionals in identifying vulnerabilities, crafting detailed reports, and generating exploit code.
+                </p>
+            </section>
+
+            <!-- Cards Section -->
+            <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Exodia Card -->
+                <div class="bg-white shadow-lg rounded-lg p-6 transform transition-transform duration-500 hover:scale-105 hover:shadow-xl animate__animated animate__fadeIn animate__delay-2s">
+                    <h3 class="text-xl font-semibold mb-4 text-gray-900">What is Exodia?</h3>
+                    <p class="text-gray-800">
+                        Exodia is an advanced web application designed to assist penetration testers with AI-powered tools. It helps in identifying vulnerabilities, generating detailed reports, and creating exploit codes, making the penetration testing process more efficient and effective.
+                    </p>
+                </div>
+
+                <!-- Models Card -->
+                <div class="bg-white shadow-lg rounded-lg p-6 transform transition-transform duration-500 hover:scale-105 hover:shadow-xl animate__animated animate__fadeIn animate__delay-3s">
+                    <h3 class="text-xl font-semibold mb-4 text-gray-900">Our Models</h3>
+                    <p class="text-gray-800">
+                        We use two types of models: a fast, less accurate model and a more accurate, slower model. The fast model is ideal for quick tasks, while the accurate model is used for detailed analysis and precision.
+                    </p>
+                </div>
+
+                <!-- Team Card -->
+                <div class="bg-white shadow-lg rounded-lg p-6 transform transition-transform duration-500 hover:scale-105 hover:shadow-xl animate__animated animate__fadeIn animate__delay-4s">
+                    <h3 class="text-xl font-semibold mb-4 text-gray-900">Our Team</h3>
+                    <p class="text-gray-800">
+                        We are a team of four students from the Faculty of Science at Zagazig University, united by our passion for cybersecurity and technology. We are dedicated to enhancing the field of penetration testing through innovative solutions.
+                    </p>
+                </div>
+
+                <!-- Technology Card -->
+                <div class="bg-white shadow-lg rounded-lg p-6 transform transition-transform duration-500 hover:scale-105 hover:shadow-xl animate__animated animate__fadeIn animate__delay-5s">
+                    <h3 class="text-xl font-semibold mb-4 text-gray-900">Technology Used</h3>
+                    <ul class="list-disc list-inside text-gray-800">
+                        <li>Django - Web framework for backend development</li>
+                        <li>Tailwind CSS - Utility-first CSS framework for styling</li>
+                        <li>Large Language Models - AI models for enhanced functionality</li>
+                        <li>Python - Programming language for implementing AI and backend logic</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Animation Section -->
+            <section class="text-center mb-12">
+                <h3 class="text-xl font-semibold mb-4 text-gray-900 animate__animated animate__fadeIn">Our Vision</h3>
+                <div class="inline-block p-4 bg-white shadow-lg rounded-lg animate__animated animate__pulse animate__infinite">
+                    <p class="text-gray-800 mb-4">
+                        We envision a future where penetration testing is significantly enhanced by AI, making security assessments faster, more accurate, and more insightful.
+                    </p>
+                    <div class="bg-blue-400 h-3 w-3 rounded-full mx-auto animate__animated animate__pulse animate__infinite"></div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+{% endblock body %}

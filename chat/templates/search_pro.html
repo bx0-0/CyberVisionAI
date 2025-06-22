@@ -1,0 +1,125 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Researcher Pro</title>
+    <link rel="stylesheet" href="{% static 'css/search_pro.css' %}">
+    <script src="{% static 'js/marked.min.js' %}"></script>
+    <script src="{% static 'js/jquery-3.5.1.slim.min.js' %}"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Researcher Pro</h1>
+            <svg class="icon" onclick="toggleDarkMode()" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M12 18c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0-5c2.7 0 5 2.3 5 5s-2.3 5-5 5-5-2.3-5-5 2.3-5 5-5zm0-1c-3.3 0-6 2.7-6 6s2.7 6 6 6 6-2.7 6-6-2.7-6-6-6z"/>
+            </svg>
+        </div>
+            <form action="" class="search-bar">
+                
+                <input type="search" name="search" pattern=".*\S.*" required>
+                <button class="search-btn" type="submit">
+                    <span>Search</span>
+                </button>
+            </form>
+
+            <div id="results">
+
+            </div>
+
+    <script>
+        function htmlEncode(str) {
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '<')
+                .replace(/>/g, '>')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        let socket;
+        let accumulatedText = "";
+
+        function startSearch() {
+            const query = document.getElementById("query").value.trim();
+            const loading = document.getElementById("loading");
+            const resultDiv = document.getElementById("result");
+            const loadingBar = document.getElementById("loading-bar");
+
+            if (!query) {
+                alert("Please enter a query.");
+                return;
+            }
+
+            resultDiv.innerHTML = "";
+            loadingBar.style.display = "block";
+            loadingBar.style.opacity = "0";
+            setTimeout(() => {
+                loadingBar.style.opacity = "1";
+                showLoadingAnimation();
+            }, 200); // Adjust the delay as needed
+            accumulatedText = "";
+
+            socket = new WebSocket("ws://" + window.location.host + "/ws/search/");
+
+            socket.onopen = function () {
+                console.log("WebSocket Connected");
+                socket.send(JSON.stringify({ query: query }));
+            };
+
+            socket.onmessage = function (event) {
+                const data = JSON.parse(event.data);
+                if (data.error) {
+                    alert(data.error);
+                } else {
+                    console.log(data.agent);
+                    if (data.agent) {
+                        const stepsList = document.getElementById("steps-list");
+                        const existingAgents = stepsList.querySelectorAll(".step-item");
+                        let agentExists = false;
+
+                        existingAgents.forEach(item => {
+                            if (item.textContent.trim() === data.agent) {
+                                agentExists = true;
+                            }
+                        });
+
+                        if (!agentExists) {
+                            const newStep = document.createElement("li");
+                            newStep.className = "step-item visible";
+                            newStep.style.visibility = "visible";
+                            newStep.innerHTML = `<p class="steps-title" style="font-weight: bold; color: #000; font-size: 16px;">${data.agent}</p>`;
+                            stepsList.appendChild(newStep);
+                        }
+                    }
+                    
+                    accumulatedText += data.message;
+                    const safeText = htmlEncode(accumulatedText);
+                    resultDiv.innerHTML = marked.parse(safeText);
+                    resultDiv.scrollTop = resultDiv.scrollHeight;
+
+                }
+            };
+
+            socket.onerror = function (error) {
+                console.error("WebSocket Error:", error);
+            };
+
+            socket.onclose = function () {
+                console.log("WebSocket Disconnected");
+                // loading.style.display = "none";
+                // loadingBar.style.display = "none"; // Hide animation
+            };
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle("dark-mode");
+        }
+    </script>
+
+
+</body>
+</html>
+</html>

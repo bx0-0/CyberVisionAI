@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+{% block body %}
+<style>
+  input, textarea, select, label {
+    color: black !important;
+  }
+  .modal-content {
+    color: black;
+  }
+  .markdown-example {
+    border: 1px solid #140202;
+    padding: 1rem;
+    border-radius: 8px;
+    background-color: #1b1919;
+    margin-bottom: 1rem;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+  }
+  th, td {
+    border: 1px solid #070000 !important;
+    padding: 0.5rem;
+    text-align: left;
+  }
+  th {
+    background-color: #131212 !important;
+  }
+  .test{
+    color: #000000;
+  }
+  
+</style>
+
+<div class="px-40 flex flex-1 justify-center py-5">
+  <div class="layout-content-container flex flex-col w-[512px] max-w-[512px] py-5 max-w-[960px] flex-1">
+    <div class="flex flex-wrap justify-between gap-3 p-4">
+      <p class="text-[#111518] tracking-light text-[32px] font-bold leading-tight min-w-72">Edit a vulnerability report</p>
+    </div>
+    <form id="reportForm" method="POST" enctype="multipart/form-data" style="color: black !important;">
+      {% csrf_token %}
+      {% bootstrap_form form %}
+      <div class="flex gap-2">
+        {% bootstrap_button button_type="submit" content="Edit report" %}
+      <!-- Button for showing Markdown example -->
+      <button type="button" id="showExampleBtn" class="btn btn-primary">Show Markdown Example</button>
+
+      <!-- Link styled as a button for complete Markdown example -->
+      <a href="URL_TO_COMPLETE_EXAMPLE" id="completeExampleLink" class="btn btn-secondary">For Complete Markdown Example</a>
+
+      </div>
+    </form>
+
+    <!-- Spinner -->
+    <div id="spinner" class="hidden fixed inset-0 bg-gray-100 bg-opacity-75 flex items-center justify-center z-50">
+      <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12"></div>
+    </div>
+
+    <!-- Modal for Markdown Example -->
+    <div id="markdownModal" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50 hidden" style="color: black !important;">
+      <div class="bg-white p-6 rounded-lg shadow-lg max-w-lg w-full" style="color: black !important;">
+        <h2 class="text-2xl font-bold mb-4">Markdown Examples</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Markdown Syntax</th>
+              <th>Rendered Output</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><pre class="markdown-example">### Heading 3</pre></td>
+              <td class="test"><h3>Heading 3</h3></td>
+            </tr>
+            <tr>
+              <td><pre class="markdown-example">**Bold Text**</pre></td>
+              <td class="test"><strong>Bold Text</strong></td>
+            </tr>
+            <tr>
+              <td><pre class="markdown-example">*Italic Text*</pre></td>
+              <td class="test"><em>Italic Text</em></td>
+            </tr>
+            <tr>
+              <td><pre class="markdown-example">[Link](https://example.com)</pre></td>
+              <td class="test"><a href="https://example.com">Link</a></td>
+            </tr>
+            <tr>
+              <td><pre class="markdown-example">- List item 1\n- List item 2</pre></td>
+              <td>
+                <ul class="test">
+                  <li>List item 1</li>
+                  <li>List item 2</li>
+                </ul>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+        <button id="closeModalBtn" class="mt-4 btn btn-primary">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.getElementById('reportForm').addEventListener('submit', function() {
+    // Show the spinner when the form is submitted
+    document.getElementById('spinner').classList.remove('hidden');
+  });
+
+  // Show Markdown Example Modal
+  document.getElementById('showExampleBtn').addEventListener('click', function() {
+    document.getElementById('markdownModal').classList.remove('hidden');
+  });
+
+  // Close the Markdown Example Modal
+  document.getElementById('closeModalBtn').addEventListener('click', function() {
+    document.getElementById('markdownModal').classList.add('hidden');
+  });
+</script>
+
+<style>
+  /* Spinner CSS */
+  .loader {
+    border-top-color: #3498db;
+    animation: spinner 1s linear infinite;
+  }
+
+  @keyframes spinner {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+</style>
+
+{% endblock body %}

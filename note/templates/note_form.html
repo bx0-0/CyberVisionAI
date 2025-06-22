@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+{% block body %}
+<style>
+  input, textarea, select, label {
+    color: black !important;
+  }
+  label {
+    text-shadow: 1cap;
+    font-style: normal;
+    font-size: medium;
+  }
+</style>
+<div class="text-right mb-9 mt-2">
+  <a href="{% url 'notes:list_notes' %}"
+     class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300">
+     View Notes
+  </a>
+</div>
+<div class="px-40 flex flex-1 justify-center py-5">
+  <div class="layout-content-container flex flex-col w-[512px] max-w-[512px] py-5 max-w-[960px] flex-1">
+    <div class="flex flex-wrap justify-between gap-3 p-4">
+      <p class="text-[#111518] tracking-light text-[32px] font-bold leading-tight min-w-72">Create a vulnerability report</p>
+    </div>
+    <form id="reportForm" method="POST" enctype="multipart/form-data" style="color: black !important;">
+      {% csrf_token %}
+      {% bootstrap_form form %}
+      {% bootstrap_button button_type="submit" content="Generate Note" %}
+    </form>
+
+    <!-- Spinner -->
+    <div id="spinner" class="hidden fixed inset-0 bg-gray-100 bg-opacity-75 flex items-center justify-center z-50">
+      <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  document.getElementById('reportForm').addEventListener('submit', function() {
+    // Show the spinner when the form is submitted
+    document.getElementById('spinner').classList.remove('hidden');
+  });
+</script>
+
+<style>
+  /* Spinner CSS */
+  .loader {
+    border-top-color: #3498db;
+    animation: spinner 1s linear infinite;
+  }
+
+  @keyframes spinner {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+</style>
+
+{% endblock body %}

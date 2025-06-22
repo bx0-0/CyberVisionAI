@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block body %}
+<style>
+    h1, h2, h3 { color: #2C3E50; }
+    table { border-collapse: collapse; width: 100%; margin: 20px 0; }
+    table, th, td { border: 1px solid #e7e4e4; }
+    th, td { padding: 8px; text-align: left; color: #1f2022; }
+    th { background-color: #ddd4d4; color: #44505c;}
+    blockquote { font-style: italic; color: #998787; margin: 10px 0; padding-left: 10px; border-left: 4px solid #444242; }
+    
+</style>
+<div class="container" style="color: rgb(8, 8, 8);">
+    <h1 class="text-center">Report</h1>
+    <pre><div class="report-content1">
+        <!-- Render the Markdown content as HTML -->
+        <div class="report-content" >{{ report | safe }}</div>
+    </div></pre>
+    <div class="text-center mt-4">
+        <!-- Print button -->
+        <button id="print-btn" class="btn btn-primary">Print Report</button>
+        <!-- Edit button -->
+        <a href="{% url 'report-gen:edit_report' report_slug  %}" class="btn btn-secondary">Edit Report</a>
+        <a href="{% url 'report-gen:delete_report' report_slug  %}" class="btn btn-secondary">DELETE Report</a>
+    </div>
+</div>
+
+<div class="report-content1 p-4" style="background-color: #ffffff; border-radius: 8px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); width: 100%; display:none;">
+    <!-- Render the Markdown content as HTML -->
+    <div class="report-content">
+        <!-- Use a hidden element to store the raw Markdown -->
+        <div id="markdown-content" style="display: none;">{{ report_no_html}}</div>
+        <!-- Use this element to display the converted HTML content -->
+        <div id="html-content" style="line-height: 1.8; font-size: 1.1rem; color: #333;"></div>
+    </div>
+</div><!-- Include the html2pdf.js library -->
+<script>
+    // Ensure the page content loads before running the script
+    document.addEventListener('DOMContentLoaded', function () {
+        // Convert Markdown to HTML
+        const markdownContent = document.getElementById('markdown-content').textContent;
+    
+        // Convert formatted markdown to HTML using marked.js
+        const htmlContent = marked.parse(markdownContent);
+    
+        // Set HTML content to the div
+        document.getElementById('html-content').innerHTML = htmlContent;
+    
+        // Style the converted HTML content
+        document.querySelectorAll('#html-content h1, #html-content h2, #html-content h3').forEach((el) => {
+            el.style.marginTop = '20px';
+            el.style.fontWeight = 'bold';
+        });
+    
+        document.querySelectorAll('#html-content p').forEach((el) => {
+            el.style.marginBottom = '16px';
+        });
+    
+        // Handle PDF generation
+        document.getElementById('print-btn').addEventListener('click', function () {
+            // Select the HTML content to be converted into PDF
+            const element = document.getElementById('html-content');
+            // Calculate the number of words in the report
+            const reportText = element.innerText || element.textContent;
+            const wordCount = reportText.split(/\s+/).length;
+            console.log(wordCount);
+            // Determine margin based on word count
+            let margin = 5.5;
+            let increase_of_margin = wordCount/1700;
+            maragin = margin * increase_of_margin;
+            // Configure html2pdf to match web styling
+            const opt = {
+                margin:maragin,
+                filename: 'report.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 5, logging: true, dpi: 300, letterRendering: true },
+                jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+            };
+    
+            // Use html2pdf to convert the selected content to PDF with the options
+            html2pdf().from(element).set(opt).save().catch(function (error) {
+                console.error('PDF generation failed:', error);
+            });
+        });
+    });
+    </script>
+    {% endblock body %}

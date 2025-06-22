@@ -1,0 +1,201 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+{% load static %}
+{% block body %}
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f8f9fa;
+        color: #000;
+    }
+    .container {
+        max-width: 800px;
+    }
+    .card {
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }
+    .card-header {
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #004085;
+    }
+    .instructions h4 {
+        font-size: 1.1rem;
+    }
+    .instructions li {
+        margin-bottom: 10px;
+    }
+    .instructions {
+        background-color: #e9ecef;
+        padding: 20px;
+        border-radius: 10px;
+    }
+    @keyframes typing {
+        from { width: 0; }
+        to { width: 100%; }
+    }
+    @keyframes blink-caret {
+        from, to { border-color: transparent; }
+        50% { border-color: black; }
+    }
+    .typewriter h1{
+        overflow: hidden;
+        border-right: .15em solid black;
+        white-space: nowrap;
+        margin: 0 auto;
+        letter-spacing: .15em;
+        animation: typing 3.5s steps(40, end), blink-caret .100s step-end infinite;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-in li {
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeIn 0.5s ease-in-out forwards;
+        background: linear-gradient(90deg, #dcdfe7, #cfc8c8); 
+        margin: 10px 0; 
+        padding: 15px; 
+        border-radius: 8px; 
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .fade-in li:nth-child(1) { animation-delay: 0.2s; }
+    .fade-in li:nth-child(2) { animation-delay: 0.4s; }
+    .fade-in li:nth-child(3) { animation-delay: 0.6s; }
+
+    .fade-in li:nth-child(1) { background: linear-gradient(90deg, #f0f4ff, #e6f0ff); }
+    .fade-in li:nth-child(2) { background: linear-gradient(90deg, #e6f0ff, #d9e8ff); }
+    .fade-in li:nth-child(3) { background: linear-gradient(90deg, #d9e8ff, #cce0ff); }
+    /* Animation for showing and hiding messages */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes fadeOut {
+        from {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        to {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+    }
+
+    /* Apply animations to messages */
+    .fade-in {
+        animation: fadeIn 0.5s ease-in-out forwards;
+    }
+
+    .fade-out {
+        animation: fadeOut 0.5s ease-in-out forwards;
+    }
+</style>
+<div class="container mt-5">
+<!-- Messages Section -->
+<div id="message-container" class="fixed top-4 right-4 z-50 space-y-4">
+    {% if messages %}
+        {% for message in messages %}
+            <div id="message-{{ forloop.counter }}" class="p-4 rounded-lg shadow-md text-white transition-all duration-300 transform 
+                {% if message.tags == 'success' %}
+                    bg-green-500
+                {% elif message.tags == 'error' %}
+                    bg-red-500
+                {% else %}
+                    bg-gray-500
+                {% endif %}
+                opacity-0 translate-y-[-20px]
+            ">
+                <pre class="text-black font-bold">{{ message }}</pre>
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>
+
+    <!-- Page Title -->
+    <div class="text-center mb-4 typewriter" id="title">
+        <h1 class="font-weight-bold">Upload Your Data to Train X</h1>
+        <p>Customize the model to be suitable for you.</p>
+    </div>
+    <!-- Upload Form -->
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white text-center">
+            <h3 class="mb-0">Upload Your Files</h3>
+        </div>
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% bootstrap_form form %}
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Instructions -->
+    <div class="card shadow-lg">
+        <div class="card-body">
+            <div class="typewriter" id="instructions-title">
+                <h2 class="mt-7 text-center text-white ">Instructions</h2>
+            </div>
+            <ul class="list-unstyled instructions   fade-in" id="instructions-list">
+                <li ><h4>1. You can upload one file at a time. Once you finish processing the file, you can upload another one.</h4></li>
+                <li><h4>2. Allowed formats: PDF Only For now.</h4></li>
+                <li><h4>3. Processing a file of more than 100 pages takes about 10 minutes once the file is uploaded. We will inform you in the notifications once it is completed.</h4></li>
+                <li><h4>4. After uploading the files and completing X training on them, you can go to start a new conversation and activate the RAG option to use the custom model to answer your questions.</h4></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Get all message elements
+        const messages = document.querySelectorAll('#message-container > div');
+
+        messages.forEach((message, index) => {
+            // Show the message with a delay based on its position
+            setTimeout(() => {
+                message.classList.add('fade-in');
+                message.classList.remove('opacity-0', 'translate-y-[-20px]');
+            }, index * 200); // Delay each message by 200ms
+
+            // Hide the message after 5 seconds
+            setTimeout(() => {
+                message.classList.remove('fade-in');
+                message.classList.add('fade-out');
+
+                // Remove the message from the DOM after the animation ends
+                setTimeout(() => {
+                    message.remove();
+                }, 500); // Match this duration with the fadeOut animation
+            }, 5000 + index * 200); // Delay removal based on the message's position
+        });
+    });
+</script>
+
+
+
+
+    
+
+
+{% endblock %}

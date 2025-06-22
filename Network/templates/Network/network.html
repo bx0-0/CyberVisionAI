@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>Network attack using JointJS</title>
+    <link rel="stylesheet" href="{% static 'css/joint.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/net.css' %}" />
+</head>
+<body>
+    <div id="paper"></div>
+
+    <div id="toolbar">
+        <button class="toolbar-button" id="link-button">Link</button>
+        <button class="toolbar-button" id="menu-button">Menu</button>
+    </div>
+
+    <div id="trash">🗑️</div>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <h3 id="modal-title">Element Details</h3>
+            <button class="close-button" id="close-button">X</button>
+            <div id="task-list" style="margin-top: 10px;"></div>
+        </div>
+    </div>
+
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/lodash.min.js' %}"></script>
+    <script src="{% static 'js/backbone-min.js' %}"></script>
+    <script src="{% static 'js/joint.min.js' %}"></script>
+    <script src="{% static 'js/tasks.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

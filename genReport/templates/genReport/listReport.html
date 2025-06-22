@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<style>
+    /* Basic pagination styling */
+.pagination {
+    display: flex;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+/* Pagination items */
+.pagination .page-item {
+    margin: 0 4px;
+}
+
+/* Pagination links */
+.pagination .page-link {
+    color: #007bff;
+    background-color: #ffffff;
+    border: 1px solid #007bff;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.25rem;
+    font-size: 1rem;
+    text-decoration: none;
+}
+
+/* Pagination links hover effect */
+.pagination .page-link:hover {
+    background-color: #f1f1f1;
+    border-color: #0056b3;
+    color: #0056b3;
+}
+
+/* Active page link styling */
+.pagination .page-item.active .page-link {
+    color: #ffffff;
+    background-color: #007bff;
+    border-color: #007bff;
+    font-weight: bold;
+}
+
+/* Disabled page link styling */
+.pagination .page-item.disabled .page-link {
+    color: #6c757d;
+    background-color: #ffffff;
+    border-color: #ddd;
+    pointer-events: none;
+}
+
+/* Custom border radius for rounded corners */
+.pagination .page-link {
+    border-radius: 0.25rem;
+}
+</style>
+    <div class="container my-5">
+        <div class="text-center mb-5">
+            <h1 class="text-3xl font-bold text-gray-900">User Reports</h1>
+            <p class="text-gray-700">Here you can view and manage your reports</p>
+        </div>
+
+        <div class="row justify-content-center">
+            <!-- Example Report Card -->
+            <div class="col-md-8">
+                
+                {% if messages %}
+                {% for message in messages %}
+                <div class="container my-4">
+                    <div class="alert alert-info bg-blue-100 text-blue-800 text-center font-semibold py-3 px-5 rounded-lg shadow-md">
+                        <p class="mb-0">{{ message }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+                <br> <a href="{% url 'report-gen:generate_report_form' %}" class="btn btn-primary bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 mb-7" style="margin-left: 41%;">Generate Report</a>
+                {% endif %}
+                    
+                {% for report in reports %}
+                <div class="card shadow-lg mb-4 bg-gray-100 rounded-lg hover:shadow-xl transition-shadow duration-300">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between items-center">
+                            <div>
+                                <h5 class="card-title text-lg font-semibold text-gray-800">Report Title: {{ report.bug_name }}</h5>
+                                <p class="text-sm text-gray-600">Date: {{ report.create_at }}</p>
+                            </div>
+                            <div>
+                                <a href="{% url 'report-gen:show_report' report.slug %}"
+                                   class="btn btn-primary bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300">
+                                    View Report
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                
+                <!-- Pagination -->
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+                        {% if reports.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ reports.previous_page_number }}" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        {% endif %}
+                        
+                        {% for num in reports.paginator.page_range %}
+                            {% if reports.number == num %}
+                            <li class="page-item active">
+                                <span class="page-link">
+                                    {{ num }}
+                                </span>
+                            </li>
+                            {% else %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                            </li>
+                            {% endif %}
+                        {% endfor %}
+                        
+                        {% if reports.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ reports.next_page_number }}" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+
+            </div>
+        </div>
+    </div>
+{% endblock body %}

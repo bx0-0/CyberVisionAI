@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+  Profile
+{% endblock title %}
+
+{% block body %}
+  <style>
+    .profile-container {
+      background: linear-gradient(to right bottom, #b4acace1, #4b545c);
+      padding: 3rem;
+      border-radius: 20px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+      max-width: 900px;
+      margin: 4rem auto;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 2rem;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .profile-container:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    .profile-picture {
+      background-color: #ffffff;
+      border-radius: 50%;
+      border: 5px solid #cec7c7;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      padding: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      width: 180px;
+      height: 180px;
+      position: relative;
+    }
+
+    .profile-picture img {
+      width: 100%;
+      height: auto;
+      border-radius: 50%;
+    }
+
+    .profile-picture.default::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #000000 10%, #ffffff 100%);
+      animation: pulse-rotate 3s infinite;
+      opacity: 0.8;
+    }
+
+    @keyframes pulse-rotate {
+      0% {
+        transform: scale(1) rotate(0deg);
+        opacity: 0.8;
+      }
+      50% {
+        transform: scale(1.1) rotate(180deg);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(1) rotate(360deg);
+        opacity: 0.8;
+      }
+    }
+
+    .profile-details {
+      flex: 1;
+    }
+
+    .profile-details h2 {
+      color: #1d2329;
+      font-size: 2rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .profile-details h3 {
+      color: #043766;
+      font-size: 1.35rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .profile-details p {
+      color: #050f0f;
+      font-size: 1.1rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .profile-header {
+      margin-bottom: 1.75rem;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 1.25rem;
+    }
+
+    .edit-button {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background-color: #3498db;
+      color: #504646 !important;
+      padding: 0.75rem 1.5rem;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+
+    .edit-button:hover {
+      background-color: #2980b9;
+    }
+
+    .page-container {
+      position: relative;
+    }
+  </style>
+
+  <div class="page-container">
+    <a href="{% url 'edit-profile' %}" class="edit-button">Edit Information</a>
+    <section class="profile-container">
+      <div class="profile-picture {% if not profile.ProfileImg %}default{% endif %}">
+        <img
+          {% if profile.ProfileImg %}
+            src=""
+          {% else %}
+            src="https://via.placeholder.com/150?text=No+Image"
+          {% endif %}
+          alt="Profile Picture"
+        />
+      </div>
+      <div class="profile-details">
+        <div class="profile-header">
+          <h2>Profile Information</h2>
+          <h3>Welcome, {{ profile.user.username }}</h3>
+        </div>
+        <p><strong>Username:</strong> {{ profile.user.username }}</p>
+        <p><strong>Country:</strong> {{ profile.Country.name }}</p>
+      </div>
+    </section>
+  </div>
+{% endblock body %}

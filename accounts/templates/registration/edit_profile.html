@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %} 
+{% load static %}
+{% block title %}
+ edit profile
+{% endblock title %}
+{% block body %}
+<style>
+  label, input {
+    color: black !important;
+  }
+</style>
+<form method="post" enctype="multipart/form-data" style="width: 95%; margin-left: 22px; color: black; margin-top: 25px;">
+    {% csrf_token %}
+    {% bootstrap_form user_form %} 
+    {% bootstrap_form form %} 
+    <button class="btn btn-outline-primary w-100" type="submit">edit</button> 
+  </form>
+{% endblock body %}

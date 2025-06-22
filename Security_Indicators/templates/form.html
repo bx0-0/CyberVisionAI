@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+{% block body %}
+
+<style>
+    .container {
+        position: relative;
+    }
+    .upload-btn {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+    }
+    .form-container {
+        padding-top: 60px; /* Adjust this to make space for the upload button */
+    }
+    .formset-row {
+        margin-bottom: 20px;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .btn {
+        font-size: 16px;
+        padding: 10px 20px;
+    }
+    .btn-add {
+        background-color: #007bff;
+        color: white;
+    }
+    .btn-add:hover {
+        background-color: #0056b3;
+    }
+    .btn-remove {
+        background-color: #dc3545;
+        color: white;
+    }
+    .btn-remove:hover {
+        background-color: #c82333;
+    }
+    .btn-submit {
+        background-color: #28a745;
+        color: white;
+    }
+    .btn-submit:hover {
+        background-color: #218838;
+    }
+    label, input {
+        color: black !important;
+    }
+</style>
+
+<div class="container mt-1">
+    <!-- Button to go to the file upload form -->
+    <a href="{% url 'Security-Indicators:handle_excel_upload' %}" class="btn btn-primary upload-btn">Upload Excel File</a>
+
+    <div class="container mt-5" style="color: black !important;">
+        <h1 class="text-center mb-4">Add Vulnerabilities</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ formset.management_form }}
+            <div id="form-container">
+                {% for form in formset %}
+                    <div class="formset-row mb-4 p-4 border rounded-lg shadow-sm bg-white">
+                        {% bootstrap_form form %}
+                        <button type="button" class="btn btn-danger remove-form">Remove</button>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="d-flex justify-content-between mt-4">
+                <button type="button" id="add-form" class="btn btn-primary">Add another vulnerability</button>
+                <button type="submit" class="btn btn-success">Create Chart</button>
+            </div>
+        </form>
+    </div>
+
+    {% if formset.non_form_errors %}
+        <div class="alert alert-danger">
+            {{ formset.non_form_errors }}
+        </div>
+    {% endif %}
+
+    {% for form in formset %}
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+    {% endfor %}
+</div>
+
+<script>
+document.getElementById('add-form').addEventListener('click', function() {
+    var formCount = document.querySelectorAll('.formset-row').length;
+    var formIndex = formCount;
+
+    if (formCount < 6) {
+        // Clone the first form and make it empty
+        var newForm = document.querySelector('.formset-row').cloneNode(true);
+        newForm.querySelectorAll('input, select, textarea').forEach(function(element) {
+            var name = element.getAttribute('name');
+            if (name) {
+                var updatedName = name.replace(/form-\d+-/, 'form-' + formIndex + '-');
+                element.setAttribute('name', updatedName);
+                element.setAttribute('id', updatedName);
+                element.value = ''; // Clear the value
+            }
+        });
+
+        // Update the management form's form-TOTAL_FORMS field
+        document.querySelector('input[name="form-TOTAL_FORMS"]').value = formCount + 1;
+
+        // Add the new form to the form container
+        document.getElementById('form-container').appendChild(newForm);
+    } else {
+        alert('You cannot add more than 6 forms.');
+    }
+});
+
+document.getElementById('form-container').addEventListener('click', function(e) {
+    if (e.target && e.target.classList.contains('remove-form')) {
+        var formRows = document.querySelectorAll('.formset-row');
+        if (formRows.length > 2) {
+            e.target.parentNode.remove();
+            // Update the management form's form-TOTAL_FORMS field
+            document.querySelector('input[name="form-TOTAL_FORMS"]').value = formRows.length - 1;
+        } else {
+            alert('At least 2 vulnerabilities form must remain.');
+        }
+    }
+});
+</script>
+
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "base.html" %} 
+{% load django_bootstrap5 %} 
+{% block title %}
+  login
+{% endblock title %}
+{% block body %} 
+{% if form.errors %} 
+<p>Your username and password didn't match. Please try again.</p> 
+{% endif %} 
+{% if next %} 
+{% if user.is_authenticated %} 
+<p>Your account doesn't have access to this page. To proceed, 
+please login with an account that has access.</p> 
+{% else %} 
+<p>Please login to see this page.</p> 
+{% endif %} 
+{% endif %} 
+<style>
+  label, input { color: black !important; }
+</style>
+<h4 style="font-weight: bolder; size: 80%; color: rgb(0, 0, 0) !important; margin-bottom: 30px;" style="margin-left: -18px;">login</h4> 
+<form method="post" action="{% url 'login' %}" style="width: 95%; margin-left: 20px !important; " > 
+{% csrf_token %} 
+{% bootstrap_form form %} 
+<button class="btn btn-outline-primary w-100" type="submit">login</button> 
+<input type="hidden" name="next" value="{{ next }}"> 
+</form> 
+{# Assumes you set up the password_reset view in your URLconf #} 
+<p><a href="{% url 'password_reset' %}" class="btn btn-outline-primary" style="margin-left: 18px;">Lost password?</a></p> 
+{% endblock  %} 

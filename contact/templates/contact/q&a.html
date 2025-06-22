@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+
+    <!-- Main Content -->
+    <main class="flex-grow py-10 bg-gradient-to-r from-green-50 to-blue-50">
+        <div class="container mx-auto px-4">
+            <!-- Introduction -->
+            <section class="text-center mb-12">
+                <h2 class="text-3xl font-bold mb-4 text-gray-900">Frequently Asked Questions</h2>
+                <p class="text-lg text-gray-700">
+                    Find answers to the most common questions about our service. If you have any other queries, feel free to contact us!
+                </p>
+            </section>
+
+            <!-- Q&A Section -->
+            <section class="space-y-8">
+                <!-- Questions -->
+                {% for q_and_a in question_and_answer %}
+                <div class="bg-white shadow-lg rounded-lg p-6 transition-transform transform hover:scale-105 hover:shadow-xl">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-xl font-semibold text-gray-900">{{ q_and_a.question }}</h3>
+                        <button class="text-gray-500 hover:text-gray-700 focus:outline-none" onclick="toggleAnswer('{{ forloop.counter }}')">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <p id="answer-{{ forloop.counter }}" class="mt-4 text-gray-800 hidden">
+                        {{ q_and_a.answer }}
+                    </p>
+                </div>
+                {% endfor %}
+            </section>
+        </div>
+    </main>
+
+    <!-- JavaScript for Toggle -->
+    <script>
+        function toggleAnswer(index) {
+            const answer = document.getElementById(`answer-${index}`);
+            if (answer.classList.contains('hidden')) {
+                answer.classList.remove('hidden');
+            } else {
+                answer.classList.add('hidden');
+            }
+        }
+    </script>
+
+{% endblock body %}

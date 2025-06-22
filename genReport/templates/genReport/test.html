@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>بحث عن عدة طرق بين مكانين</title>
+  <!-- تضمين مكتبة Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <style>
+    #map { height: 450px; width: 100%; }
+  </style>
+</head>
+<body>
+
+  <input type="text" id="searchStart" placeholder="ابحث عن مكان البداية...">
+  <input type="text" id="searchEnd" placeholder="ابحث عن مكان النهاية...">
+  <button onclick="searchRoute()">ابحث عن الطرق</button>
+
+  <div id="map"></div>
+
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <script>
+    // إنشاء الخريطة
+    var map = L.map('map').setView([30.5853431, 31.5035127], 13); // إحداثيات مكان افتراضي (الزقازيق، مصر)
+
+    // إضافة طبقة OpenStreetMap
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    // الدالة لحساب الطرق بين المكانين
+    function searchRoute() {
+      var startLocation = document.getElementById('searchStart').value;
+      var endLocation = document.getElementById('searchEnd').value;
+
+      // الحصول على الإحداثيات من Nominatim
+      var urlStart = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(startLocation)}`;
+      var urlEnd = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(endLocation)}`;
+
+      Promise.all([fetch(urlStart), fetch(urlEnd)])
+        .then(responses => Promise.all(responses.map(response => response.json())))
+        .then(data => {
+          if (data[0].length > 0 && data[1].length > 0) {
+            var startLat = data[0][0].lat;
+            var startLon = data[0][0].lon;
+            var endLat = data[1][0].lat;
+            var endLon = data[1][0].lon;
+
+            // تحديث الخريطة لتشمل الأماكن
+            map.setView([startLat, startLon], 13);
+
+            // إضافة Marker للمكانين
+            L.marker([startLat, startLon]).addTo(map).bindPopup(`<b>${startLocation}</b>`).openPopup();
+            L.marker([endLat, endLon]).addTo(map).bindPopup(`<b>${endLocation}</b>`).openPopup();
+
+            // حساب عدة طرق بين المكانين باستخدام OSRM API
+            var osrmUrl = `https://router.project-osrm.org/route/v1/driving/${startLon},${startLat};${endLon},${endLat}?alternatives=true&geometries=geojson&overview=full`;
+            
+            fetch(osrmUrl)
+              .then(response => response.json())
+              .then(routeData => {
+                if (routeData.routes && routeData.routes.length > 0) {
+                  routeData.routes.forEach((route, index) => {
+                    var routeGeoJson = route.geometry;
+                    var distance = route.distance / 1000; // المسافة بالكيلومترات
+
+                    // إضافة الخط (مسار الطريق) على الخريطة
+                    L.geoJSON(routeGeoJson).addTo(map);
+
+                    // عرض المسافة لكل طريق
+                    console.log(`الطريق ${index + 1}: المسافة هي: ${distance.toFixed(2)} كيلومتر`);
+                  });
+                }
+              })
+              .catch(error => {
+                console.error('حدث خطأ أثناء حساب المسارات:', error);
+              });
+          } else {
+            alert('لم يتم العثور على أحد الأماكن');
+          }
+        })
+        .catch(error => {
+          console.error('حدث خطأ أثناء البحث عن الأماكن:', error);
+        });
+    }
+  </script>
+
+</body>
+</html>

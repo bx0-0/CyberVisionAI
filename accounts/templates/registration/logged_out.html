@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block title %}
+  logout
+{% endblock title %}
+{% block body %}
+  <p class="alert alert-info text-primary" style="text-align: center;">Logged out!</p>
+  <a href="{% url 'login'%}" class="btn btn-outline-primary">Click here to login again.</a>
+{% endblock %}

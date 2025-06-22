@@ -1,0 +1,208 @@
+{% load static %}
+<html>
+<!DOCTYPE html>
+<head>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+    <link
+      rel="stylesheet"
+      as="style"
+      onload="this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?display=swap&amp;family=Manrope%3Awght%40400%3B500%3B700%3B800&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900"
+    />
+    <link rel="stylesheet" href="{% static 'css/bootstrap-profiles.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap-icons.min.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <title>{% block title %}{% endblock title %}</title>
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+    <script src="{% static 'js/html2pdf.bundle.min.js' %}"></script>
+    <script src="{% static 'js/tailwindcss.js' %}"></script>
+    <script src="{% static 'js/marked.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+
+</head>
+<body>
+  <div class="relative flex size-full min-h-screen flex-col bg-[#FFFFFF] group/design-root overflow-x-hidden" style='font-family: Manrope, "Noto Sans", sans-serif;'>
+    <div class="layout-container flex h-full grow flex-col">
+
+      <header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#EEEEEE] px-10 py-3">
+        <div class="flex items-center gap-4 text-black">
+            <div class="size-4">
+                <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M36.7273 44C33.9891 44 31.6043 39.8386 30.3636 33.69C29.123 39.8386 26.7382 44 24 44C21.2618 44 18.877 39.8386 17.6364 33.69C16.3957 39.8386 14.0109 44 11.2727 44C7.25611 44 4 35.0457 4 24C4 12.9543 7.25611 4 11.2727 4C14.0109 4 16.3957 8.16144 17.6364 14.31C18.877 8.16144 21.2618 4 24 4C26.7382 4 29.123 8.16144 30.3636 14.31C31.6043 8.16144 33.9891 4 36.7273 4C40.7439 4 44 12.9543 44 24C44 35.0457 40.7439 44 36.7273 44Z"
+                        fill="currentColor"
+                    ></path>
+                </svg>
+            </div>
+            <a href="{% url 'home:show_home' %}" class="text-black text-lg font-bold leading-tight tracking-[-0.015em]">
+                <h2 class="text-black text-lg font-bold leading-tight tracking-[-0.015em]">Exodia</h2>
+            </a>
+        </div>
+        <div class="flex flex-1 justify-end gap-8">
+            <div class="flex items-center gap-9">
+                <a class="text-black text-sm font-medium leading-normal" href="{% url 'home:show_about' %}">About Us</a>
+                <a class="text-black text-sm font-medium leading-normal" href="{% url 'home:show_documention' %}">Documentation</a>
+                <a class="text-black text-sm font-medium leading-normal" href="{% url 'profile' %}">Profile</a>
+    
+                {% if user.is_authenticated %}
+                    <form action="{% url 'logout' %}" method="post">
+                        {% csrf_token %}
+                        <button style="margin-bottom: -38% !important;" class="text-black text-sm font-medium leading-normal" type="submit">Logout</button>
+                    </form>
+                {% else %}
+                    <a class="text-black text-sm font-medium leading-normal" href="{% url 'login' %}">Login</a>
+                {% endif %}
+            </div>
+            <button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#EEEEEE] text-black text-sm font-bold leading-normal tracking-[0.015em]">
+                <a href="{% url 'contact:send_massage' %}"><span class="truncate">Help</span></a>
+            </button>
+    
+            <!-- Notification Icon with Badge -->
+            <div class="relative">
+              <button id="notification-button" class="cursor-pointer relative">
+                  <!-- Notification Icon -->
+                  <i class="fas fa-bell text-black text-2xl"></i>
+          
+                  <!-- Notification Badge -->
+                  <span id="notification-badge" class="badge bg-danger" style="display: none; position: absolute; top: -5px; right: -5px; font-size: 0.75rem;">0</span>
+              </button>
+          
+              <!-- Notifications Dropdown -->
+              <div id="notifications-dropdown" class="dropdown-menu dropdown-menu-end" style="display: none; position: absolute; top: 60px; right: 0; background-color: white; border: 1px solid #ddd; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); z-index: 1000;">
+                  <ul id="notification-list" class="list-unstyled p-3" style="max-height: 300px; overflow-y: auto; color: black;"></ul>
+              </div>
+          </div>
+    
+            <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" style='background-image: url("{% static "img/image.png" %}");'></div>
+        </div>
+    </header>
+    
+    {% block body %}
+      
+    {% endblock body %}
+      
+    
+  </div>
+</div>
+<script>
+// Helper function to get cookies
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+// Function to fetch unread notifications
+async function GetUnreadNotification() {
+    const csrf_token = getCookie('csrftoken');
+    try {
+        const response = await fetch(`{% url 'RAGManger:notifications_view' %}`, {
+            method: 'POST', 
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrf_token,
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        console.log(data)
+        return data;
+    } catch (error) {
+        console.error('There was a problem with the fetch operation:', error);
+        return [];
+    }
+}
+
+// Function to display notifications in the UI
+function displayNotifications(notifications) {
+    const notificationList = document.getElementById('notification-list');
+    notificationList.innerHTML = ''; // Clear the current list
+
+    // Check if there are no notifications
+    if (!notifications || notifications.length === 0) {
+        const listItem = document.createElement('li');
+        listItem.textContent = 'No notifications found';
+        listItem.classList.add('no-notifications'); 
+        notificationList.appendChild(listItem);
+        return; 
+    }
+
+    // Display each notification
+    notifications.forEach(notification => {
+        const listItem = document.createElement('li');
+        listItem.textContent = notification.message;
+
+        if (!notification.is_read) {
+            listItem.classList.add('unread'); 
+        }
+
+        notificationList.appendChild(listItem);
+    });
+}
+// Initialize unread notifications count
+let unreadNotificationsCount = parseInt(getCookie('unreadNotifications')) || 0;
+const badge = document.getElementById('notification-badge');
+
+if (unreadNotificationsCount > 0) {
+    badge.style.display = 'inline';
+    badge.textContent = unreadNotificationsCount;
+}
+
+// Connect to the SSE endpoint
+const eventSource = new EventSource(`{% url 'RAGManger:sse_notifications' %}`);
+
+// Listen for messages from the server
+eventSource.onmessage = async function(event) {
+    // Increment the unread notifications count
+    unreadNotificationsCount++;
+    badge.style.display = 'inline';
+    badge.textContent = unreadNotificationsCount;
+
+    // Update the cookie
+    document.cookie = `unreadNotifications=${unreadNotificationsCount}; path=/`;
+};
+
+// Handle errors
+eventSource.onerror = function() {
+    console.error("Error occurred with SSE connection.");
+};
+
+// Toggle notifications dropdown when the button is clicked
+const notificationButton = document.getElementById('notification-button');
+const notificationsDropdown = document.getElementById('notifications-dropdown');
+
+notificationButton.addEventListener('click', async function() {
+    if (notificationsDropdown.style.display === 'none') {
+        notificationsDropdown.style.display = 'block';
+
+        // Reset the unread notifications count
+        unreadNotificationsCount = 0;
+        badge.style.display = 'none';
+        badge.textContent = '';
+        document.cookie = `unreadNotifications=0; path=/`;
+
+        // Fetch and display unread notifications
+        const notifications = await GetUnreadNotification();
+        displayNotifications(notifications);
+    } else {
+        notificationsDropdown.style.display = 'none';
+    }
+});
+</script>
+</body>
+
+</html>

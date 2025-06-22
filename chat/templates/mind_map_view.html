@@ -1,0 +1,24 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="{% static 'js/d3.min.js' %}"></script>
+    <script src="{% static 'js/index.js' %}"></script>
+    <script src="{% static 'js/index1.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    {{ mind_map_content|safe }}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var toolbarBrand = document.querySelector('.mm-toolbar-brand');
+        if (toolbarBrand) {
+            toolbarBrand.style.display = 'none';
+        }
+    });
+</script>
+</body>
+</html>

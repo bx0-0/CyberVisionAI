@@ -1,0 +1,270 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block body %}
+
+<!-- Page Container -->
+<link rel="stylesheet" href="{% static 'css/animate.min.css' %}">
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #fff; 
+    }
+    .title-container {
+        text-align: center;
+    }
+    .title {
+        font-size: 5rem; 
+        color: #333; 
+        font-weight: bold; 
+        position: relative;
+        display: inline-block;
+        overflow: hidden;
+    }
+    .title::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+        animation: slide 2s infinite;
+    }
+    @keyframes slide {
+        0% {
+            left: -100%;
+        }
+        100% {
+            left: 100%;
+        }
+    }
+    .title span {
+        position: relative;
+        z-index: 1;
+    }
+</style>
+
+<div class="px-4 sm:px-8 lg:px-16 xl:px-24 flex flex-col justify-center py-8 bg-gradient-to-r from-gray-100 to-gray-300">
+
+  <div class="layout-content-container flex flex-col max-w-4xl mx-auto">
+
+    <!-- Hero Section -->
+    <div class="title-container">
+        <h1 class="title ">Documentation </h1>
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex flex-col gap-8 px-4">
+
+      <!-- Our Models -->
+      <section id="Models" class="bg-white p-6 rounded-lg shadow-lg mb-8">
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-4 animate__animated animate__fadeIn">Our Models</h1>
+        <p class="text-base text-gray-700 mb-4">Our system relies on two primary models for data processing and result generation, both of which have been extensively trained to enhance their accuracy and effectiveness. Below is an overview of each model:</p>
+
+        <!-- Model Llama3.1 -->
+        <div class="flex flex-col gap-4 bg-gray-50 p-4 rounded-lg shadow-md mb-4 transition-transform transform hover:scale-105 duration-300 animate__animated animate__fadeIn">
+          <h2 class="text-xl font-semibold text-gray-900 mb-2">Model Llama3.1</h2>
+          <p class="text-sm text-gray-700 mb-2">
+            - <strong>Capacity:8 Billion Parameters</strong><br><br>
+            - <strong>Description:Model Llama3.1 belongs to the Llama family and is designed to handle large and complex datasets. Currently, it has been trained not only on its core training data but also on additional web pentesting data. This additional training aims to improve the model's ability to analyze security data and generate detailed reports. It is important to note that while the model is highly effective, it may still encounter errors from time to time due to the nature and variety of the data it processes.</strong> 
+          </p>
+          <div class="text-center">
+            <img src="{% static 'img/llama.jpeg' %}" alt="Model Llama" class="mx-auto rounded-lg shadow-lg" style="max-width: 100%; height: auto;">
+          </div>
+          <div class="text-center mt-4">
+            <a href="https://ai.meta.com/blog/meta-llama-3-1/" class="bg-blue-600 text-white py-2 px-4 rounded-full font-semibold hover:bg-blue-700 transition-colors duration-300">Learn More</a>
+          </div>
+        </div>
+
+        <!-- Model Gemma -->
+        <div class="flex flex-col gap-4 bg-gray-50 p-4 rounded-lg shadow-md mb-4 transition-transform transform hover:scale-105 duration-300 animate__animated animate__fadeIn">
+          <h2 class="text-xl font-semibold text-gray-900 mb-2">Model Gemma</h2>
+          <p class="text-sm text-gray-700 mb-2">
+            - <strong>Capacity:2 Billion Parameters</strong><br><br>
+            - <strong>Description:Model Gemma is designed for faster processing with less complex data. It is ideal for everyday tasks and provides quick responses. Similar to Llama3.1, this model has also been trained on web pentesting data in addition to its core training data. This helps improve its accuracy in delivering swift security analyses. As with any model trained on data, there is a possibility of occasional errors, and users should be aware of this potential limitation.</strong> 
+          </p>
+          <div class="text-center">
+            <img src="{% static 'img/gemma.jpeg' %}" alt="Model Gemma" class="mx-auto rounded-lg shadow-lg" style="max-width: 100%; height: auto;">
+          </div>
+          <div class="text-center mt-4">
+            <a href="https://blog.google/technology/developers/gemma-open-models/" class="bg-blue-600 text-white py-2 px-4 rounded-full font-semibold hover:bg-blue-700 transition-colors duration-300">Learn More</a>
+          </div>
+        </div>
+        <!-- Chat Feature Section -->
+<section class="bg-gray-100 py-8">
+    <div class="container mx-auto px-4">
+      <h2 class="text-2xl font-bold text-gray-900 mb-4">Chat Feature</h2>
+      <p class="text-base text-gray-700 mb-4">
+        Our chat feature allows you to engage with different models and manage your conversations efficiently. Here's what you can do:
+      </p>
+      
+      <!-- Feature Details -->
+      <ul class="list-disc list-inside pl-4 text-gray-700 mb-4">
+        <li><strong>Select a Model:</strong> You can choose the model you'd like to interact with from the available options. Each model may have different specialties, so feel free to select the one that suits your needs best.</li>
+        
+        <li><strong>Save a Chat:</strong> If you want to revisit a conversation later, you can save the chat session. Keep in mind, once a chat is saved, you will no longer be able to message the model in that specific conversation. It's great for preserving important discussions.</li>
+        
+        <li><strong>Delete a Chat:</strong> If you no longer need a saved chat, you can delete it from your records. This will permanently remove the conversation, so make sure it's something you won't need again before deleting.</li>
+      </ul>
+      
+      <p class="text-base text-gray-700 mb-4">
+        Make the most of the chat feature by selecting the right model, saving meaningful conversations, and managing your chat history with ease.
+      </p>
+    </div>
+  </section>
+  
+        <div>
+            <p class="text-base text-gray-700 mb-3">
+                Currently, all of our models—both small and large—are available for free and are still under development. You are welcome to try them at no cost during this period of modification and improvement.
+              </p>
+                      </div>
+        <div class="text-center mt-4">
+            <a href="{% url 'chat:streamlit_view' %}" class="bg-blue-600 text-white py-2 px-4 rounded-full font-semibold hover:bg-blue-700 transition-colors duration-300">Start Chat</a>
+          </div>
+      </section>
+
+      <!-- Report Creation -->
+      <section id="ReportCreation" class="bg-white p-6 rounded-lg shadow-lg mb-8">
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-4 animate__animated animate__fadeIn">Report Creation</h1>
+        <p class="text-base text-gray-700 mb-4">Our report creation function enables you to generate detailed reports based on AI model analysis and input data. You can:</p>
+        <ul class="list-disc list-inside pl-4 text-gray-700 mb-4">
+          <li><strong>Edit the report:</strong> Utilize the Markdown editor to make precise adjustments to your report's content and format.</li>
+          <li><strong>Save the report:</strong> Save your changes to ensure that your report is preserved.</li>
+          <li><strong>Delete the report:</strong> Remove reports that are no longer required to keep your workspace organized.</li>
+          <li><strong>Print the report:</strong> Export the report as a well-formatted PDF document for easy sharing and presentation.</li>
+        </ul>
+        <div class="text-center">
+            <img src="{% static 'img/18ad15e2-2e71-401f-b212-60dec77d8676.png' %}" alt="Report Creation" class="mx-auto rounded-lg shadow-lg" style="max-width: 50%; height: 50%;">
+          </a>
+        </div>
+        <div class="text-center mt-4">
+          <a href="{% url 'report-gen:generate_report_form' %}" class="bg-blue-600 text-white py-2 px-4 rounded-full font-semibold hover:bg-blue-700 transition-colors duration-300">Start Creating</a>
+        </div>
+      </section>
+
+      <!-- Markdown Section -->
+      <section id="Markdown" class="bg-white p-6 rounded-lg shadow-lg mb-8">
+        <h2 class="text-2xl font-extrabold text-gray-900 mb-4 animate__animated animate__fadeIn">Markdown in Reports</h2>
+        <p class="text-base text-gray-700 mb-4">Markdown is a lightweight markup language that enhances text formatting. It allows you to incorporate various styles such as headings, lists, and links into your reports. Below is a sample of Markdown syntax and its resulting HTML output.</p>
+        
+        <!-- Example Markdown Syntax -->
+        <div class="bg-gray-50 p-4 rounded-lg shadow-md mb-4 animate__animated animate__fadeIn">
+          <h3 class="text-lg font-semibold text-gray-900 mb-2">Markdown Syntax Example:</h3>
+          <pre class="bg-gray-200 p-4 rounded-lg text-gray-700">
+            <code>
+          # Main Heading
+          ## Subheading
+          - Bullet Point
+          1. Numbered List
+          **Bold Text**
+          *Italic Text*
+          [Link](http://example.com)
+            </code>
+          </pre>
+        </div>
+        
+        <!-- Resulting HTML Output -->
+        <div class="bg-gray-50 p-4 rounded-lg shadow-md animate__animated animate__fadeIn">
+          <h3 class="text-lg font-semibold text-gray-900 mb-2">Resulting HTML Output:</h3>
+          <div class="text-gray-700">
+            <h1 class="text-xl font-bold">Main Heading</h1>
+            <h2 class="text-lg font-semibold">Subheading</h2>
+            <ul class="list-disc pl-4">
+              <li>Bullet Point</li>
+            </ul>
+            <ol class="list-decimal pl-4">
+              <li>Numbered List</li>
+            </ol>
+            <p><strong>Bold Text</strong></p>
+            <p><em>Italic Text</em></p>
+            <p><a href="http://example.com" class="text-blue-600 hover:text-blue-700">Link</a></p>
+          </div>
+        </div>
+        <div class="text-center mt-6">
+          <img src="{% static 'img/markdown.jpeg' %}" alt="Markdown Example" class="mx-auto rounded-lg shadow-lg" style="max-width: 80%; height: auto;">
+        </div>
+      </section>
+
+      <!-- Security Indicators -->
+      <section id="SecurityIndicators" class="bg-white p-6 rounded-lg shadow-lg mb-8">
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-4 animate__animated animate__fadeIn">Security Indicators</h1>
+        <p class="text-base text-gray-700 mb-4">Our Security Indicators feature allows you to create visualizations of vulnerabilities discovered by the pentester. You can either manually enter data or upload an Excel file with the vulnerability information.</p>
+        <div class="bg-gray-50 p-4 rounded-lg shadow-md animate__animated animate__fadeIn">
+          <h2 class="text-xl font-semibold text-gray-900 mb-2">Manual Data Entry</h2>
+          <p class="text-base text-gray-700 mb-4">
+            Our system allows for manual entry of vulnerabilities through the website forms, with a limit of up to <strong>6</strong> vulnerabilities. This feature is designed to let users input detailed information about the vulnerabilities they have identified. For each vulnerability, users can specify:
+          </p>
+          <ul class="list-disc list-inside pl-4 text-gray-700 mb-4">
+            <li><strong>Vulnerability Name:</strong> The name of the vulnerability.</li>
+            <li><strong>Occurrence Count:</strong> The number of times this vulnerability was found.</li>
+            <li><strong>Severity:</strong> The level of severity of the vulnerability (e.g., High, Medium, Low).</li>
+          </ul>
+          <p class="text-base text-gray-700 mb-4">
+            These details will be used to generate visualizations in the pentesting report. Please ensure that only up to 6 vulnerabilities are entered manually; any additional vulnerabilities must be uploaded via an Excel file or other supported methods.
+          </p>
+          <h2 class="text-xl font-semibold text-gray-900 mb-4">Excel File Upload</h2>
+          <p class="text-base text-gray-700 mb-4">
+            To upload an Excel file with vulnerability information, please ensure that the file follows the format outlined below. This will help our system correctly interpret and process the data for visualization. The Excel file should include the following columns:
+          </p>
+          <ul class="list-disc list-inside pl-4 text-gray-700 mb-4">
+            <li><strong>Vulnerability Type:</strong> The type of vulnerability (e.g., SQL Injection, XSS).</li>
+            <li><strong>Count:</strong> The number of times this vulnerability was detected.</li>
+            <li><strong>Severity:</strong> The severity level of the vulnerability (e.g., High, Medium, Low).</li>
+          </ul>
+          <p class="text-base text-gray-700 mb-4">
+            Ensure that each column is properly labeled and that the data is accurately filled in according to the specified format. This will ensure that the system can effectively process and visualize the vulnerability data.
+          </p>
+          
+          <!-- Data Table -->
+          <table class="w-full bg-white border border-gray-200 rounded-lg shadow-md" style="color: black; border-collapse: collapse; font-style: normal; font-weight:bold">
+            <thead>
+              <tr class="bg-gray-100 text-gray-600 text-sm font-semibold">
+                <th class="border px-4 py-2 text-center">Vulnerability Type</th>
+                <th class="border px-4 py-2 text-center">Count</th>
+                <th class="border px-4 py-2 text-center">Severity</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="bg-gray-50">
+                <td class="border px-4 py-2 text-center">SQL Injection</td>
+                <td class="border px-4 py-2 text-center">5</td>
+                <td class="border px-4 py-2 text-center">High</td>
+              </tr>
+              <tr class="bg-gray-50">
+                <td class="border px-4 py-2 text-center">XSS</td>
+                <td class="border px-4 py-2 text-center">3</td>
+                <td class="border px-4 py-2 text-center">Medium</td>
+              </tr>
+              <tr class="bg-gray-50">
+                <td class="border px-4 py-2 text-center">CSRF</td>
+                <td class="border px-4 py-2 text-center">2</td>
+                <td class="border px-4 py-2 text-center">Low</td>
+              </tr>
+            </tbody>
+          </table>
+          
+        </div>
+        <div>
+            <div class="text-center mt-4">
+                <a href="{% url 'Security-Indicators:add_vulnerabilities' %}" class="bg-blue-600 text-white py-2 px-4 rounded-full font-semibold hover:bg-blue-700 transition-colors duration-300">Try It Manual</a>
+              </div>
+          </div>
+          <div>
+            <div class="text-center mt-4">
+                <a href="{% url 'Security-Indicators:handle_excel_upload' %}" class="bg-blue-600 text-white py-2 px-4 rounded-full font-semibold hover:bg-blue-700 transition-colors duration-300">Try It Excel</a>
+              </div>
+      </section>
+
+
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

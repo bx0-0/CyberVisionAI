@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block body %}
+    
+<div class="px-40 flex flex-1 justify-center py-5">
+  <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+    <div class="@container">
+      <div class="@[480px]:p-4">
+        <div
+          class="flex min-h-[480px] flex-col gap-6 bg-cover bg-center bg-no-repeat @[480px]:gap-8 @[480px]:rounded-lg items-center justify-center p-4"
+          style='background-image: linear-gradient(rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%), url("{% static 'img/469cd9c1-fc2c-4bcd-86df-5c9d8868c0e7.png' %}");'
+        >
+          <div class="flex flex-col gap-2 text-center">
+           <h6
+              class="text-white text-4xl font-black leading-tight tracking-[-0.033em] @[480px]:text-1xl @[480px]:font-black @[480px]:leading-tight @[480px]:tracking-[-0.033em]"
+            >
+             
+            </h6>
+            <h1
+              class="text-white text-4xl font-black leading-tight tracking-[-0.033em] @[480px]:text-5xl @[480px]:font-black @[480px]:leading-tight @[480px]:tracking-[-0.033em]"
+            >
+              Supercharge your security testing
+            </h1>
+            <h2 class="text-white text-sm font-normal leading-normal @[480px]:text-base @[480px]:font-normal @[480px]:leading-normal">
+              Automate tasks, get help with the latest techniques, and more
+            </h2>
+          </div>
+          <div class="flex-wrap gap-3 flex justify-center">
+            <button
+              class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 @[480px]:h-12 @[480px]:px-5 bg-black text-[#FFFFFF] text-sm font-bold leading-normal tracking-[0.015em] @[480px]:text-base @[480px]:font-bold @[480px]:leading-normal @[480px]:tracking-[0.015em]"
+            >
+              <a href="#Features"><span class="truncate">Get Started</span></a>
+            </button>
+            <button
+              class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 @[480px]:h-12 @[480px]:px-5 bg-[#EEEEEE] text-black text-sm font-bold leading-normal tracking-[0.015em] @[480px]:text-base @[480px]:font-bold @[480px]:leading-normal @[480px]:tracking-[0.015em]"
+            >
+              <a href="#Features"><span class="truncate">Explore Features</span></a>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="flex flex-col gap-10 px-4 py-10 @container">
+      <div class="flex flex-col gap-4">
+        <h1
+          class="text-[#0e141b] tracking-light text-[32px] font-bold leading-tight @[480px]:text-4xl @[480px]:font-black @[480px]:leading-tight @[480px]:tracking-[-0.033em] max-w-[720px]"
+        >
+        Exodia
+        </h1>
+        <p class="text-[#0e141b] text-base font-normal leading-normal max-w-[720px]">
+          Why Exodia?
+          Unleash your cybersecurity prowess with Exodia, where mythic inspiration meets cutting-edge technology.                </p>
+      </div>
+      <h1
+        id='Features' class="text-black tracking-light text-[32px] font-bold leading-tight @[480px]:text-4xl @[480px]:font-black @[480px]:leading-tight @[480px]:tracking-[-0.033em] max-w-[720px]"
+      >
+        Features Overview
+      </h1>
+      <div class="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-3">
+        <div class="flex flex-col gap-3 pb-3">
+          <a href="{% url 'chat:list_conversations' %}"><div
+            class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-lg" style='background-image: url("{% static 'img/085c633f-d000-4123-b4ab-63408c0410e3.png' %}");'></div></a>
+          <div>
+            <p class="text-black text-base font-medium leading-normal">AI Chat Assistant(X)</p>
+            <p class="text-[#6B6B6B] text-sm font-normal leading-normal">Use our AI Chat Assistant (Model X) to ask questions and get expert guidance instantly..</p>
+          </div>
+        </div>
+        <div class="flex flex-col gap-3 pb-3">
+          <a href="{% url 'notes:create_note' %}">
+          <div
+            class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-lg"
+            style='background-image: url("{% static 'img/c0d403b1-c4a6-4b89-8bdd-85c049e02ee3.png' %}");'
+          ></div></a>
+          <div>
+            <p class="text-black text-base font-medium leading-normal">Notebooks</p>
+            <p class="text-[#6B6B6B] text-sm font-normal leading-normal">Take notes in the Notebook.</p>
+          </div>
+        </div>
+        <div class="flex flex-col gap-3 pb-3">
+          <a href="{% url 'Security-Indicators:list_charts' %}">
+          <div
+            class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-lg"
+            style='background-image: url("{% static 'img/9b7628c3-13d1-4ee7-bf43-202b5be7aee5.png' %}");'
+          ></div></a>
+          <div>
+            <p class="text-black text-base font-medium leading-normal">Security Indicators</p>
+            <p class="text-[#6B6B6B] text-sm font-normal leading-normal">Assess and visualize website security with graphical insights..</p>
+          </div>
+        </div>
+        <div class="flex flex-col gap-3 pb-3">
+          <a href="{% url 'report-gen:generate_report_form' %}">
+          <div
+            class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-lg"
+            style='background-image: url("{% static 'img/18ad15e2-2e71-401f-b212-60dec77d8676.png' %}");'
+          ></div></a>
+          <div>
+            <p class="text-black text-base font-medium leading-normal">Report Generation Tool</p>
+            <p class="text-[#6B6B6B] text-sm font-normal leading-normal">Generate reports on your findings.</p>
+          </div>
+        </div>
+        <div class="flex flex-col gap-3 pb-3">
+          <a href="{% url 'RAGManger:upload_RAG_content' %}">
+          <div
+            class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-lg"
+            style='background-image: url("{% static 'img/4676c7e2-fcd0-49a3-80b1-cdfc540b320b.png' %}");'
+          ></div></a>
+          <div>
+            <p class="text-black text-base font-medium leading-normal">Try Our RAG System</p>
+            <p class="text-[#6B6B6B] text-sm font-normal leading-normal">Customize the model to be suitable for you.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="@container">
+      <div class="flex flex-col justify-end gap-6 px-4 py-10 @[480px]:gap-8 @[480px]:px-10 @[480px]:py-20">
+        <div class="flex flex-col gap-2 text-center">
+          <h1
+            class="text-black tracking-light text-[32px] font-bold leading-tight @[480px]:text-4xl @[480px]:font-black @[480px]:leading-tight @[480px]:tracking-[-0.033em] max-w-[720px]"
+          >
+            Ready to get started?
+          </h1>
+          <p class="text-black text-base font-normal leading-normal max-w-[720px">Start using the Exodia LLM now for free .</p>
+        </div>
+        <div class="flex flex-1 justify-center">
+          <div class="flex justify-center">
+            <button
+              class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 @[480px]:h-12 @[480px]:px-5 bg-black text-[#FFFFFF] text-sm font-bold leading-normal tracking-[0.015em] @[480px]:text-base @[480px]:font-bold @[480px]:leading-normal @[480px]:tracking-[0.015em] grow"
+            >
+            <a href="{% url 'chat:streamlit_view' %}"><span class="truncate">Get Started</span></a>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    {% endblock body %}

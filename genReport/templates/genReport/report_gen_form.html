@@ -1,0 +1,220 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+
+{% block body %}
+<style>
+  /* General styles */
+  input, textarea, select, label {
+    color: black !important;
+  }
+  label {
+    text-shadow: 1px 1px rgba(0,0,0,0.3);
+    font-style: normal;
+    font-size: medium;
+  }
+
+  /* Background overlay */
+  #overlay {
+    display: none; /* Initially hidden */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3); /* Slightly transparent black */
+    z-index: 999; /* Ensure it's behind the loading section but above other content */
+  }
+
+  /* Modern background for loading section */
+  #loading-section {
+    display: none; /* Initially hidden */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #f5f5f5, #e0e0e0);
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    width: 400px; /* Increased width */
+    height: 300px; /* Increased height */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000; /* Ensure it's on top of the overlay */
+    overflow: hidden; /* Ensure content stays within the div */
+    text-align: center; /* Center text and other content */
+  }
+
+  #loading-message {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 20px;
+    font-weight: 600;
+    animation: fadeInOut 2s infinite;
+  }
+
+  .loading-bar {
+    position: relative;
+    width: 100%;
+    height: 12px;
+    background: linear-gradient(135deg, #d0d0d0, #b0b0b0);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+
+  .loading-bar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #00acc1, #0097a7);
+    animation: loadingAnimation 7s infinite ease-in-out;
+    border-radius: 10px;
+  }
+
+  @keyframes loadingAnimation {
+    0% { transform: translateX(-100%); }
+    50% { transform: translateX(0); }
+    100% { transform: translateX(100%); }
+  }
+
+  @keyframes fadeInOut {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
+  }
+
+  /* Simple bird with flapping wings */
+  .bird {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    background-color: #ff6600; /* Bird color */
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+    animation: fly 2s infinite;
+  }
+
+  .bird::before,
+  .bird::after {
+    content: '';
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background-color: #ff6600; /* Bird color */
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+    border-radius: 50%;
+    transform-origin: center;
+    animation: flap 0.5s infinite alternate;
+  }
+
+  .bird::before {
+    top: -20px;
+    left: 10px;
+  }
+
+  .bird::after {
+    top: -20px;
+    right: 10px;
+  }
+
+  @keyframes fly {
+    0% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-15px);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes flap {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(-30deg);
+    }
+  }
+</style>
+
+<!-- Background overlay -->
+<div id="overlay"></div>
+
+<!-- Button to navigate to reports -->
+<div class="text-right mb-9 mt-2">
+  <a href="{% url 'report-gen:list_reports' %}"
+     class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300">
+     View Reports
+  </a>
+</div>
+
+<div class="px-40 flex flex-1 justify-center py-5">
+  <div class="layout-content-container flex flex-col w-[512px] max-w-[512px] py-5 max-w-[960px] flex-1">
+    <div class="flex flex-wrap justify-between gap-3 p-4">
+      <p class="text-[#111518] tracking-light text-[32px] font-bold leading-tight min-w-72">Create a vulnerability report</p>
+    </div>
+    <form id="reportForm" method="POST" enctype="multipart/form-data" style="color: black !important;">
+      {% csrf_token %}
+      {% bootstrap_form form %}
+      {% bootstrap_button button_type="submit" content="Generate report" %}
+    </form>
+
+    <!-- Loading Section -->
+    <div id="loading-section" class="hidden">
+      <div class="loading-bar"></div>
+      <p id="loading-message">Loading, please wait...</p>
+      <div class="bird"></div> <!-- Simple bird animation -->
+    </div>
+  </div>
+</div>
+
+<script>
+  document.getElementById('reportForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent the default form submission
+
+    // Show the loading section and overlay
+    document.getElementById('loading-section').style.display = 'flex';
+    document.getElementById('overlay').style.display = 'block';
+
+    // Simulate a delay before submitting the form
+    setTimeout(() => {
+      console.log("Submitting form");
+      this.submit();
+    }, 100); // Adjust the delay as needed to allow the animation to show
+  });
+
+  // Dynamic messages
+  const messages = [
+    "Preparing your report...",
+    "Almost there!",
+    "Just a moment...",
+    "Hang tight!",
+    "We're almost done!",
+    "Getting things ready...",
+    "Your report is on its way!",
+    "Please hold on...",
+    "Finishing up...",
+    "Working on it...",
+    "Just a few seconds more...",
+    "Almost finished!",
+    "We're finalizing everything!",
+    "Making sure everything's perfect...",
+    "Getting your report ready..."
+  ];
+
+  let currentMessageIndex = 0;
+
+  function updateLoadingMessage() {
+    document.getElementById('loading-message').textContent = messages[currentMessageIndex];
+    currentMessageIndex = (currentMessageIndex + 1) % messages.length;
+  }
+
+  setInterval(updateLoadingMessage, 8000); // Change message every 8 seconds
+</script>
+
+{% endblock body %}

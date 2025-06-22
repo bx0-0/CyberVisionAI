@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %} 
+{% block title %}Sign Up{% endblock %}
+
+{% block body %}
+
+<style>
+  input,label{
+    color: black !important;
+  }
+</style>
+  <h2>Sign up</h2>
+  <form method="post" style="width: 95%; margin-left: 22px;">
+    {% csrf_token %}
+    {% bootstrap_field form.username %}
+    {% bootstrap_field form.country %}
+    {% bootstrap_field form.password1 %}
+    {% bootstrap_field form.password2 %}
+    <button class="btn btn-outline-primary w-100" type="submit" style="margin-bottom: 10px;">Sign Up</button>
+  </form>
+  
+{% endblock %}

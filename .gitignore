@@ -1,0 +1,30 @@
+# Ignore Python cache and compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore virtual environments
+venv/
+ENV/
+env/
+.venv/
+pyvenv.cfg
+
+# Ignore Django database and media
+*.sqlite3
+db.sqlite3
+media/
+
+# Ignore environment variables and secrets
+.env
+
+# Ignore VSCode settings
+.vscode/
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
+
+# Ignore Streamlit temporary files
+src/chat/streamlit_stricture/temp/
