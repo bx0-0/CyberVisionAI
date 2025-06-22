@@ -210,10 +210,13 @@ def main_ui():
                 with st.spinner("Converting the last message to an audio file..."):
                     print(last_message)
                     file = tts.text_to_speech(last_message,st.session_state.speaker)
-                    st.markdown("""
-                    <h6 style='color: blue;'>👾🔊:</h6>
-                    """, unsafe_allow_html=True)
-                    st.audio(file)
+                    if file:
+                        st.markdown("""
+                        <h6 style='color: blue;'>👾🔊:</h6>
+                        """, unsafe_allow_html=True)
+                        st.audio(file)
+                    else:
+                        st.info("No audio file available for this response.", icon=":material/info:")
                     print(st.session_state.convert_last_message_to_audio)
                     st.session_state.convert_last_message_to_audio = False
             else:
