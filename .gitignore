@@ -28,3 +28,6 @@ Thumbs.db
 
 # Ignore Streamlit temporary files
 src/chat/streamlit_stricture/temp/
+
+# Ignore LanceDB files
+lancedb/Users_contents.lance/
