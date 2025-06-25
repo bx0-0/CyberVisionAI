@@ -7,7 +7,6 @@ import PyPDF2
 import docx
 import re
 from sklearn.feature_extraction.text import TfidfVectorizer
-import cv2
 from duckduckgo_search import DDGS
 from spiders import extract_text
 import datetime  
@@ -202,7 +201,7 @@ def use_external_ais(prompt):
 def extract_mind_map_content(text):
     match = re.search(r'<output>(.*?)</output>', text, re.DOTALL)
     if match:
-        return match.group(1).replace("<strong style='color: 
+        return match.group(1).replace("<strong style='color: #888;'>🧠 Answer:...</strong><br>",'\n').replace('Related concepts:','### Related concepts:').strip()
 
     return None
 
@@ -267,7 +266,7 @@ def clear_text_after_convert_to_audio(text: str):
     
     text = re.sub(r'[\U00010000-\U0010ffff]', '', text)
     
-    text = text.replace('*',' ').replace('
+    text = text.replace('*',' ').replace('#',' ')
     
 
     statments = [', see code in the converstion. ',', you can  see the code is in the converstion. ',', the code is in the chat. ',', see code in the chat. ']
